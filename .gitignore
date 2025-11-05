@@ -18,7 +18,7 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -35,3 +35,23 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### OS ###
+.DS_Store
+
+### Logs ###
+*.log
+logs/
+
+### Build artifacts ###
+*.class
+
+### Environment / Secrets ###
+src/main/resources/.env
+.env.*
+application-*.yml
+application-*.properties
+
+### Test reports ###
+test-output/
+reports/
