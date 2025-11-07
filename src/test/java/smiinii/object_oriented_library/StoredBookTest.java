@@ -28,7 +28,7 @@ public class StoredBookTest {
         StoredBook book = StoredBook.createAvailable(1L);
         book.loan();
         // when & then
-        assertThatThrownBy(() -> book.loan()).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(book::loan).isInstanceOf(IllegalStateException.class);
     }
     
     @Test
@@ -37,6 +37,41 @@ public class StoredBookTest {
         // given
         StoredBook book = StoredBook.createOnHold(1L);
         // when & then
-        assertThatThrownBy(() -> book.loan()).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(book::loan).isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    @DisplayName("반납할 도서가 대출 중인 도서가 아니면 예외처리")
+    void notLoanBook() {
+        // given
+        StoredBook book = StoredBook.createAvailable(1L);
+        // when & then
+        assertThatThrownBy(() -> book.returnBook(false)).isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("대출 중인 도서만 반납할 수 있습니다.");
+    }
+
+    @Test
+    @DisplayName("반납 후 예약자가 있으면 ON_HOLD")
+    void returnBookOnHold() {
+        // given
+        StoredBook book = StoredBook.createAvailable(1L);
+        // when
+        book.loan();
+        book.returnBook(true);
+        // then
+        assertThat(book.getStatus()).isEqualTo(StoredBookStatus.ON_HOLD);
+    }
+
+    @Test
+    @DisplayName("반납 후 예약자가 없으면 AVAILABLE")
+    void returnBookAvailable() {
+        // given
+        StoredBook book = StoredBook.createAvailable(1L);
+        // when
+        book.loan();
+        book.returnBook(false);
+        // then
+        assertThat(book.getStatus()).isEqualTo(StoredBookStatus.AVAILABLE);
     }
 }
