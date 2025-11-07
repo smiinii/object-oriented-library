@@ -37,6 +37,17 @@ public class StoredBook {
         this.status = StoredBookStatus.LOANED;
     }
 
+    public void returnBook(boolean isReservation) {
+        if (status != StoredBookStatus.LOANED) {
+            throw new IllegalStateException("대출 중인 도서만 반납할 수 있습니다.");
+        }
+        if (isReservation) {
+            this.status = StoredBookStatus.ON_HOLD;
+            return;
+        }
+        this.status = StoredBookStatus.AVAILABLE;
+    }
+
     public StoredBookStatus getStatus() {
         return status;
     }
