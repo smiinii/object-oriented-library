@@ -16,7 +16,7 @@ public class StoredBookTest {
         // given
         StoredBook book = StoredBook.createAvailable(1L);
         // when
-        book.loan(1L);
+        book.loan();
         // then
         assertThat(book.getStatus()).isEqualTo(StoredBookStatus.LOANED);
     }
@@ -26,9 +26,9 @@ public class StoredBookTest {
     void loanFailedWhenAlreadyLoaned() {
         // given
         StoredBook book = StoredBook.createAvailable(1L);
-        book.loan(1L);
+        book.loan();
         // when & then
-        assertThatThrownBy(() -> book.loan(1L)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> book.loan()).isInstanceOf(IllegalStateException.class);
     }
     
     @Test
@@ -37,6 +37,6 @@ public class StoredBookTest {
         // given
         StoredBook book = StoredBook.createOnHold(1L);
         // when & then
-        assertThatThrownBy(() -> book.loan(1L)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> book.loan()).isInstanceOf(IllegalStateException.class);
     }
 }
