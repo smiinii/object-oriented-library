@@ -14,6 +14,8 @@ public class StoredBook {
 
     private long bookId;
 
+    protected StoredBook() {}
+
     private StoredBook(long bookId, StoredBookStatus status) {
         this.bookId = bookId;
         this.status = status;
