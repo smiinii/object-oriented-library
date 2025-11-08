@@ -3,9 +3,11 @@ package smiinii.object_oriented_library;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import smiinii.object_oriented_library.domain.StoredBook;
+import smiinii.object_oriented_library.domain.StoredBookStatus;
 import smiinii.object_oriented_library.domain.StoredBooks;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -70,5 +72,30 @@ public class StoredBooksTest {
         assertThatThrownBy(storedBooks::allLoaned)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("소장본이 비어있습니다.");
+    }
+
+    @DisplayName("AVAILABLE 상태인 StoredBook 중 첫 번째를 반환한다")
+    @Test
+    void returnsFirstAvailableBook() {
+        // given
+        StoredBooks storedBooks = new StoredBooks();
+        storedBooks.add(StoredBook.createOnHold(1L));
+        storedBooks.add(StoredBook.createAvailable(2L));
+        // when
+        Optional<StoredBook> result = storedBooks.firstAvailable();
+        // then
+        assertThat(result.get().getStatus()).isEqualTo(StoredBookStatus.AVAILABLE);
+    }
+
+    @DisplayName("AVAILABLE 상태가 없으면 Optional.empty()를 반환한다")
+    @Test
+    void firstAvailable_returnsEmptyWhenNoAvailableBook() {
+        // given
+        StoredBooks storedBooks = new StoredBooks();
+        storedBooks.add(StoredBook.createOnHold(1L));
+        // when
+        Optional<StoredBook> result = storedBooks.firstAvailable();
+        // then
+        assertThat(result).isEmpty();
     }
 }
