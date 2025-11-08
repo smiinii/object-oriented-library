@@ -6,6 +6,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Embeddable
 public class StoredBooks {
@@ -31,5 +32,11 @@ public class StoredBooks {
 
     public List<StoredBook> getStoredBooks() {
         return List.copyOf(storedBooks);
+    }
+
+    public Optional<StoredBook> firstAvailable() {
+        return storedBooks.stream()
+                .filter(StoredBook::isAvailable)
+                .findFirst();
     }
 }

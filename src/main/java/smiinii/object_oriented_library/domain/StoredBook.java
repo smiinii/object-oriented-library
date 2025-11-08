@@ -50,6 +50,18 @@ public class StoredBook {
         this.status = StoredBookStatus.AVAILABLE;
     }
 
+    public boolean isAvailable() {
+        return status == StoredBookStatus.AVAILABLE;
+    }
+
+    public boolean isOnHold() {
+        return status == StoredBookStatus.ON_HOLD;
+    }
+
+    public boolean isLoaned() {
+        return status == StoredBookStatus.LOANED;
+    }
+
     public StoredBookStatus getStatus() {
         return status;
     }
