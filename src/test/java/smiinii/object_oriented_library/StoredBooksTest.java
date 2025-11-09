@@ -2,6 +2,7 @@ package smiinii.object_oriented_library;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import smiinii.object_oriented_library.domain.Book;
 import smiinii.object_oriented_library.domain.StoredBook;
 import smiinii.object_oriented_library.domain.StoredBookStatus;
 import smiinii.object_oriented_library.domain.StoredBooks;
@@ -29,24 +30,26 @@ public class StoredBooksTest {
     @DisplayName("add() 호출 시 StoredBook이 리스트에 추가된다")
     void addStoredBooks() {
         // given
+        Book book = new Book("클린 코드", "로버트 마틴");
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook Book = StoredBook.createAvailable(1L);
+        StoredBook storedBook = StoredBook.createAvailable(book);
         // when
-        storedBooks.add(Book);
+        storedBooks.add(storedBook);
         // then
-        assertThat(storedBooks.getStoredBooks()).hasSize(1).containsExactly(Book);
+        assertThat(storedBooks.getStoredBooks()).hasSize(1).containsExactly(storedBook);
     }
 
     @Test
     @DisplayName("외부에서 반환 리스트를 수정해도 내부 상태는 변하지 않는다")
     void returnedListIsImmutable() {
+        Book book = new Book("클린 코드", "로버트 마틴");
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook book = StoredBook.createAvailable(1L);
-        storedBooks.add(book);
+        StoredBook storedBook = StoredBook.createAvailable(book);
+        storedBooks.add(storedBook);
 
         List<StoredBook> result = storedBooks.getStoredBooks();
 
-        assertThatThrownBy(() -> result.add(StoredBook.createAvailable(2L)))
+        assertThatThrownBy(() -> result.add(StoredBook.createAvailable(book)))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
 
@@ -54,11 +57,12 @@ public class StoredBooksTest {
     @DisplayName("모든 소장본이 대출 중이면 allLoaned()는 true를 반환한다.")
     void allLoanedTrueWhenAllBooksLoaned() {
         // given
+        Book book = new Book("클린 코드", "로버트 마틴");
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook book = StoredBook.createAvailable(1L);
-        book.loan(); // 상태 전이 AVAILABLE → LOANED
+        StoredBook storedBook = StoredBook.createAvailable(book);
+        storedBook.loan(); // 상태 전이 AVAILABLE → LOANED
         // when
-        storedBooks.add(book);
+        storedBooks.add(storedBook);
         // then
         assertThat(storedBooks.allLoaned()).isTrue();
     }
@@ -78,9 +82,11 @@ public class StoredBooksTest {
     @Test
     void returnsFirstAvailableBook() {
         // given
+        Book book1 = new Book("클린 코드", "로버트 마틴");
+        Book book2 = new Book("클린", "마틴");
         StoredBooks storedBooks = new StoredBooks();
-        storedBooks.add(StoredBook.createOnHold(1L));
-        storedBooks.add(StoredBook.createAvailable(2L));
+        storedBooks.add(StoredBook.createOnHold(book1));
+        storedBooks.add(StoredBook.createAvailable(book2));
         // when
         Optional<StoredBook> result = storedBooks.firstAvailable();
         // then
@@ -91,8 +97,9 @@ public class StoredBooksTest {
     @Test
     void firstAvailable_returnsEmptyWhenNoAvailableBook() {
         // given
+        Book book = new Book("클린 코드", "로버트 마틴");
         StoredBooks storedBooks = new StoredBooks();
-        storedBooks.add(StoredBook.createOnHold(1L));
+        storedBooks.add(StoredBook.createOnHold(book));
         // when
         Optional<StoredBook> result = storedBooks.firstAvailable();
         // then
