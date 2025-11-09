@@ -11,7 +11,7 @@ import java.util.Optional;
 @Embeddable
 public class StoredBooks {
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StoredBook> storedBooks = new ArrayList<>();
 
     public void add (StoredBook storedBook) {

@@ -12,20 +12,22 @@ public class StoredBook {
     @Enumerated(EnumType.STRING)
     private StoredBookStatus status;
 
-    private long bookId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 
     protected StoredBook() {}
 
-    private StoredBook(long bookId, StoredBookStatus status) {
-        this.bookId = bookId;
+    private StoredBook(Book bookId, StoredBookStatus status) {
+        this.book = bookId;
         this.status = status;
     }
 
-    public static StoredBook createAvailable(long bookId) {
+    public static StoredBook createAvailable(Book bookId) {
         return new StoredBook(bookId, StoredBookStatus.AVAILABLE);
     }
 
-    public static StoredBook createOnHold(long bookId) {
+    public static StoredBook createOnHold(Book bookId) {
         return new StoredBook(bookId, StoredBookStatus.ON_HOLD);
     }
 
