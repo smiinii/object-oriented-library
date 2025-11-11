@@ -30,13 +30,25 @@ public class StoredBooks {
                         storedBook.getStatus() == StoredBookStatus.LOANED);
     }
 
-    public List<StoredBook> getStoredBooks() {
-        return List.copyOf(storedBooks);
-    }
-
     public Optional<StoredBook> firstAvailable() {
         return storedBooks.stream()
                 .filter(StoredBook::isAvailable)
                 .findFirst();
+    }
+
+    public Optional<StoredBook> findById(Long id) {
+        return storedBooks.stream()
+                .filter(storedBook -> storedBook.hasId(id))
+                .findFirst();
+    }
+
+    public void restoreAllToAvailable(List<Long> releasedIds) {
+        for (Long id : releasedIds) {
+            findById(id).ifPresent(StoredBook::returnToAvailable);
+        }
+    }
+
+    public List<StoredBook> getStoredBooks() {
+        return List.copyOf(storedBooks);
     }
 }
