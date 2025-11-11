@@ -32,17 +32,17 @@ public class StoredBook {
     }
 
     public void loan() {
-        if (status == StoredBookStatus.LOANED) {
+        if (status.isLoaned()) {
             throw new IllegalStateException("이미 대출 중입니다.");
         }
-        if (status == StoredBookStatus.ON_HOLD) {
+        if (status.isOnHold()) {
             throw new IllegalStateException("다른 회원이 예약 중입니다.");
         }
         this.status = StoredBookStatus.LOANED;
     }
 
     public void returnBook(boolean isReservation) {
-        if (status != StoredBookStatus.LOANED) {
+        if (!status.isLoaned()) {
             throw new IllegalStateException("대출 중인 도서만 반납할 수 있습니다.");
         }
         if (isReservation) {
@@ -57,7 +57,7 @@ public class StoredBook {
     }
 
     public boolean isAvailable() {
-        return status == StoredBookStatus.AVAILABLE;
+        return status.isAvailable();
     }
 
     public boolean hasId(Long targetId) {
