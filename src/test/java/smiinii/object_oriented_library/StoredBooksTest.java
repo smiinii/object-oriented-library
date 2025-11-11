@@ -7,6 +7,7 @@ import smiinii.object_oriented_library.domain.StoredBook;
 import smiinii.object_oriented_library.domain.StoredBookStatus;
 import smiinii.object_oriented_library.domain.StoredBooks;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,9 +94,19 @@ public class StoredBooksTest {
         assertThat(result.get().getStatus()).isEqualTo(StoredBookStatus.AVAILABLE);
     }
 
+    private static void setId(StoredBook target, long id) {
+        try {
+            Field field = StoredBook.class.getDeclaredField("id");
+            field.setAccessible(true);
+            field.setLong(target, id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @DisplayName("AVAILABLE 상태가 없으면 Optional.empty()를 반환한다")
     @Test
-    void firstAvailable_returnsEmptyWhenNoAvailableBook() {
+    void returnsEmptyWhenNoAvailableBook() {
         // given
         Book book = new Book("클린 코드", "로버트 마틴");
         StoredBooks storedBooks = new StoredBooks();
@@ -104,5 +115,60 @@ public class StoredBooksTest {
         Optional<StoredBook> result = storedBooks.firstAvailable();
         // then
         assertThat(result).isEmpty();
+    }
+
+    @DisplayName("일치하는 id가 있으면 해당 StoredBook을 반환한다")
+    @Test
+    void returnsMatchingStoredBook() {
+        // given
+        Book book = new Book("클린 코드", "로버트 마틴");
+        StoredBooks storedBooks = new StoredBooks();
+        StoredBook sb1 = StoredBook.createAvailable(book);
+        StoredBook sb2 = StoredBook.createOnHold(book);
+        storedBooks.add(sb1);
+        storedBooks.add(sb2);
+        setId(sb1, 101L);
+        setId(sb2, 202L);
+        // when
+        Optional<StoredBook> found1 = storedBooks.findById(101L);
+        Optional<StoredBook> found2 = storedBooks.findById(202L);
+        // then
+        assertThat(found1).isPresent().contains(sb1);
+        assertThat(found2).isPresent().contains(sb2);
+    }
+
+    @DisplayName("일치하는 id가 없으면 Optional.empty()를 반환한다")
+    @Test
+    void returnsEmptyWhenNotFound() {
+        // given
+        Book book = new Book("클린 코드", "로버트 마틴");
+        StoredBooks storedBooks = new StoredBooks();
+        StoredBook sb = StoredBook.createAvailable(book);
+        storedBooks.add(sb);
+        setId(sb, 101L);
+        // when
+        Optional<StoredBook> notFound = storedBooks.findById(999L);
+        // then
+        assertThat(notFound).isEmpty();
+    }
+
+    @DisplayName("전달한 id들의 소장본을 AVAILABLE로 복귀시킨다")
+    @Test
+    void changesStatusToAvailable() {
+        // given
+        Book book = new Book("클린 코드", "로버트 마틴");
+        StoredBooks storedBooks = new StoredBooks();
+        StoredBook hold = StoredBook.createOnHold(book);
+        StoredBook loaned = StoredBook.createAvailable(book);
+        loaned.loan();
+        storedBooks.add(hold);
+        storedBooks.add(loaned);
+        setId(hold, 11L);
+        setId(loaned, 22L);
+        // when
+        storedBooks.restoreAllToAvailable(List.of(11L, 22L));
+        // then
+        assertThat(hold.getStatus()).isEqualTo(StoredBookStatus.AVAILABLE);
+        assertThat(loaned.getStatus()).isEqualTo(StoredBookStatus.AVAILABLE);
     }
 }
