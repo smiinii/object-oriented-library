@@ -18,7 +18,7 @@ public class reservationsTest {
     @DisplayName("tryReserve : 같은 회원이 활성 예약을 가진 경우 false 반환")
     void notSameMemberOrnotIsActive() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservations reservations = new Reservations();
         Clock fixedClock = Clock.fixed(
                 LocalDateTime.of(2025, 11, 12, 10, 0)
@@ -35,7 +35,7 @@ public class reservationsTest {
     @DisplayName("tryReserve : 예약 최대 대기열을 넘어갈 경우 false를 반환")
     void exceedsMaxQueueSize() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservations reservations = new Reservations();
         Clock fixedClock = Clock.fixed(
                 LocalDateTime.of(2025, 11, 12, 10, 0)
@@ -53,7 +53,7 @@ public class reservationsTest {
     @DisplayName("tryReserve : 예약 시도 성공")
     void successTryReserve() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservations reservations = new Reservations();
         Clock fixedClock = Clock.fixed(
                 LocalDateTime.of(2025, 11, 12, 10, 0)
@@ -85,7 +85,7 @@ public class reservationsTest {
     @DisplayName("assignHoldToNextInQueue : 예약 대기자가 있으면 우선권 부여하고 true 반환")
     void assignHoldToNextInQueue() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservations reservations = new Reservations();
         Duration duration = Duration.ofHours(3);
         Clock fixedClock = Clock.fixed(
@@ -108,7 +108,7 @@ public class reservationsTest {
     @DisplayName("releaseExpiredHolds: 기한 지난 HOLD_READY는 해제되고 EXPIRED로 전이")
     void releasesOverdueHoldAndTransitionsToExpired() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservations reservations = new Reservations();
         reservations.tryReserve(book, 1L, 3, java.time.Clock.systemUTC());
 
@@ -131,7 +131,7 @@ public class reservationsTest {
     @DisplayName("findCollectible: HOLD_READY이고 회원·소장본이 일치하면 Optional에 담겨 반환")
     void returnsCollectibleWhenHoldReadyAndMatches() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservations reservations = new Reservations();
         LocalDateTime holdUntil = LocalDateTime.of(2025, 11, 12, 12, 0);
 

@@ -2,7 +2,6 @@ package smiinii.object_oriented_library;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import smiinii.object_oriented_library.domain.Book;
 import smiinii.object_oriented_library.domain.StoredBook;
 import smiinii.object_oriented_library.domain.StoredBookStatus;
 
@@ -15,8 +14,7 @@ public class StoredBookTest {
     @DisplayName("AVAILABLE이면 대출 성공")
     void loanSuccessTest() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
-        StoredBook storedBook = StoredBook.createAvailable(book);
+        StoredBook storedBook = StoredBook.createAvailable();
         // when
         storedBook.loan();
         // then
@@ -27,8 +25,7 @@ public class StoredBookTest {
     @DisplayName("이미 대출 중이면 예외처리")
     void loanFailedWhenAlreadyLoaned() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
-        StoredBook storedBook = StoredBook.createAvailable(book);
+        StoredBook storedBook = StoredBook.createAvailable();
         storedBook.loan();
         // when & then
         assertThatThrownBy(storedBook::loan).isInstanceOf(IllegalStateException.class);
@@ -38,8 +35,7 @@ public class StoredBookTest {
     @DisplayName("다른 회원이 예약 중이면 예외처리")
     void loanFailedWhenOnHold() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
-        StoredBook storedBook = StoredBook.createOnHold(book);
+        StoredBook storedBook = StoredBook.createOnHold();
         // when & then
         assertThatThrownBy(storedBook::loan).isInstanceOf(IllegalStateException.class);
     }
@@ -48,8 +44,7 @@ public class StoredBookTest {
     @DisplayName("반납할 도서가 대출 중인 도서가 아니면 예외처리")
     void notLoanBook() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
-        StoredBook storedBook = StoredBook.createAvailable(book);
+        StoredBook storedBook = StoredBook.createAvailable();
         // when & then
         assertThatThrownBy(() -> storedBook.returnBook(false)).isInstanceOf(IllegalStateException.class)
                 .isInstanceOf(IllegalStateException.class)
@@ -60,8 +55,7 @@ public class StoredBookTest {
     @DisplayName("반납 후 예약자가 있으면 ON_HOLD")
     void returnBookOnHold() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
-        StoredBook storedBook = StoredBook.createAvailable(book);
+        StoredBook storedBook = StoredBook.createAvailable();
         // when
         storedBook.loan();
         storedBook.returnBook(true);
@@ -73,8 +67,7 @@ public class StoredBookTest {
     @DisplayName("반납 후 예약자가 없으면 AVAILABLE")
     void returnBookAvailable() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
-        StoredBook storedBook = StoredBook.createAvailable(book);
+        StoredBook storedBook = StoredBook.createAvailable();
         // when
         storedBook.loan();
         storedBook.returnBook(false);

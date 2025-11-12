@@ -17,7 +17,7 @@ public class reservationTest {
     @DisplayName("create: 예약 생성")
     void reservationCreate() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Long memberId = 1L;
         LocalDateTime createdAt = LocalDateTime.of(2025, 11, 11, 21, 0);
         // when
@@ -33,7 +33,7 @@ public class reservationTest {
     @DisplayName("prepareHold: 예약 대기열이 아니면 예외")
     void throwsWhenNotQueued() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         reservation.prepareHold(10L, LocalDateTime.now());
         // when & then
@@ -46,7 +46,7 @@ public class reservationTest {
     @DisplayName("prepareHold: QUEUED이면 HOLD_READY로 전이하고 필드 세팅")
     void transitionsAndSetsFields() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         LocalDateTime created = LocalDateTime.of(2025, 11, 12, 8, 0);
         LocalDateTime holdUntil = LocalDateTime.of(2025, 11, 12, 9, 0);
         Reservation reservation = Reservation.create(book, 1L, created);
@@ -63,7 +63,7 @@ public class reservationTest {
     @DisplayName("expire: 만료시각 이후면 EXPIRED로 전이하고 hold 해제")
     void afterHoldUntilExpires() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         LocalDateTime created = LocalDateTime.of(2025, 11, 12, 8, 0);
         LocalDateTime holdUntil = LocalDateTime.of(2025, 11, 12, 9, 0);
 
@@ -80,7 +80,7 @@ public class reservationTest {
     @DisplayName("expire: 만료시각 이전이면 만료되지 않음")
     void beforeHoldUntilDoesNotExpire() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         LocalDateTime created = LocalDateTime.of(2025, 11, 12, 8, 0);
         LocalDateTime holdUntil = LocalDateTime.of(2025, 11, 12, 9, 0);
 
@@ -97,7 +97,7 @@ public class reservationTest {
     @DisplayName("complete: HOLD_READY가 아니면 예외")
     void throwsWhenNotHoldReady() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         LocalDateTime created = LocalDateTime.of(2025, 11, 12, 8, 0);
         Reservation reservation = Reservation.create(book, 1L, created);
         // when & then
@@ -110,7 +110,7 @@ public class reservationTest {
     @DisplayName("complete: now가 holdUntil 이후면 예외")
     void throwsWhenAfterHoldUntil() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         LocalDateTime holdUntil = LocalDateTime.of(2025, 11, 12, 9, 0);
         reservation.prepareHold(10L, holdUntil);
@@ -124,7 +124,7 @@ public class reservationTest {
     @DisplayName("complete: 만료 전이면 LOAN_COMPLETE로 전이")
     void beforeHoldUntilTransitionsToLoanComplete() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         LocalDateTime holdUntil = LocalDateTime.of(2025, 11, 12, 9, 0);
         reservation.prepareHold(10L, holdUntil);
@@ -138,7 +138,7 @@ public class reservationTest {
     @DisplayName("sameMember: 같은 회원이면 true")
     void returnsTrueForSameMember() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         // when
         boolean result = reservation.sameMember(1L);
@@ -150,7 +150,7 @@ public class reservationTest {
     @DisplayName("sameMember: 다른 회원이면 false")
     void returnsFalseForDifferentMember() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         // when
         boolean result = reservation.sameMember(2L);
@@ -162,7 +162,7 @@ public class reservationTest {
     @DisplayName("matchesHold: HOLD_READY이고 동일 storedBookId면 true")
     void returnsTrueWhenHoldReadyAndSameId() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         reservation.prepareHold(10L, LocalDateTime.now().plusDays(1));
         // when
@@ -175,7 +175,7 @@ public class reservationTest {
     @DisplayName("matchesHold: HOLD_READY여도 storedBookId 다르면 false")
     void returnsFalseWhenHoldReadyButDifferentId() {
         // given
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         reservation.prepareHold(10L, LocalDateTime.now().plusDays(1));
         // when
@@ -188,7 +188,7 @@ public class reservationTest {
     @DisplayName("matchesHold: HOLD_READY가 아니면 false")
     void returnsFalseWhenNotHoldReady() {
         // given (아직 QUEUED)
-        Book book = new Book("클린 코드", "로버트 마틴");
+        Book book = Book.registerNew("클린 코드", "로버트 마틴", 3);
         Reservation reservation = Reservation.create(book, 1L, LocalDateTime.now());
         // when
         boolean result = reservation.matchesHold(10L);
