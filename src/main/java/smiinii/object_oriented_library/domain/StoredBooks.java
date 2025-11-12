@@ -51,4 +51,8 @@ public class StoredBooks {
     public List<StoredBook> getStoredBooks() {
         return List.copyOf(storedBooks);
     }
+
+    public int size() {
+        return storedBooks.size();
+    }
 }
