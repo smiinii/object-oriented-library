@@ -28,36 +28,40 @@ public class Book {
 
     public static Book registerNew(String title, String author, int initialCount) {
         if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("제목 필요");
+            throw new IllegalArgumentException("제목이 필요합니다.");
         }
         if (author == null || author.isBlank()) {
-            throw new IllegalArgumentException("저자 필요");
+            throw new IllegalArgumentException("저자가 필요합니다.");
         }
-        if (initialCount < 0) {
-            throw new IllegalArgumentException("초기 소장본 수는 0 이상");
+        if (initialCount <= 0) {
+            throw new IllegalArgumentException("초기 소장본 수는 1개 이상이어야 합니다.");
         }
         Book book = new Book(title, author);
-        if (initialCount > 0) {
-            book.addAvailableStoredBooks(initialCount);
-        }
+        book.addAvailableStoredBooks(initialCount);
         return book;
     }
 
     public void addAvailableStoredBooks(int count) {
-        if (count <= 0) {
-            throw new IllegalArgumentException("추가 수량은 1 이상");
-        }
         for (int i = 0; i < count; i++) {
             StoredBook sb = StoredBook.createAvailable();
             registerStoredBook(sb);
         }
     }
 
-    public void registerStoredBook(StoredBook storedBook) {
-        if (storedBook == null) {
-            throw new IllegalArgumentException("추가할 소장본이 비어있습니다.");
-        }
+    private void registerStoredBook(StoredBook storedBook) {
         storedBook.setBook(this);
         storedBooks.add(storedBook);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public StoredBooks getStoredBooks() {
+        return storedBooks;
     }
 }
