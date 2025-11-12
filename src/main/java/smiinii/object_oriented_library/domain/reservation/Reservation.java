@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import smiinii.object_oriented_library.domain.Book;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Entity
 public class Reservation {
@@ -46,12 +47,15 @@ public class Reservation {
         this.holdUntil = holdUntil;
     }
 
-    public void expire(LocalDateTime now) {
+    public Optional<Long> expireIfOverdue(LocalDateTime now) {
         if (reservationStatus.isHoldReady() && holdUntil != null && now.isAfter(holdUntil)) {
+            Long releasedId = holdStoredBookId;
             this.reservationStatus = ReservationStatus.EXPIRED;
             this.holdStoredBookId = null;
             this.holdUntil = null;
+            return Optional.of(releasedId);
         }
+        return Optional.empty();
     }
 
     public void complete(LocalDateTime now) {

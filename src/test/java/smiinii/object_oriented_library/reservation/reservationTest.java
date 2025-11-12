@@ -70,7 +70,7 @@ public class reservationTest {
         Reservation reservation = Reservation.create(book, 1L, created);
         reservation.prepareHold(10L, holdUntil);
         // when
-        reservation.expire(holdUntil.plusSeconds(1));
+        reservation.expireIfOverdue(holdUntil.plusSeconds(1));
         // then
         assertThat(reservation.getReservationStatus()).isEqualTo(ReservationStatus.EXPIRED);
         assertThat(reservation.getHoldStoredBookId()).isNull();
@@ -87,7 +87,7 @@ public class reservationTest {
         Reservation reservation = Reservation.create(book, 1L, created);
         reservation.prepareHold(10L, holdUntil);
         // when
-        reservation.expire(holdUntil.minusSeconds(1));
+        reservation.expireIfOverdue(holdUntil.minusSeconds(1));
         // then
         assertThat(reservation.getReservationStatus()).isEqualTo(ReservationStatus.HOLD_READY);
         assertThat(reservation.getHoldStoredBookId()).isEqualTo(10L);
