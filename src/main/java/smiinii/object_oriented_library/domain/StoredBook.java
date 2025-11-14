@@ -18,20 +18,17 @@ public class StoredBook {
 
     protected StoredBook() {}
 
-    private StoredBook(StoredBookStatus status) {
+    private StoredBook(Book book, StoredBookStatus status) {
+        this.book = book;
         this.status = status;
     }
 
-    public static StoredBook createAvailable() {
-        return new StoredBook(StoredBookStatus.AVAILABLE);
+    public static StoredBook createAvailable(Book book) {
+        return new StoredBook(book, StoredBookStatus.AVAILABLE);
     }
 
-    public static StoredBook createOnHold() {
-        return new StoredBook(StoredBookStatus.ON_HOLD);
-    }
-
-    public void linkTo(Book book) {
-        this.book = book;
+    public static StoredBook createOnHold(Book book) {
+        return new StoredBook(book, StoredBookStatus.ON_HOLD);
     }
 
     public void loan() {

@@ -43,14 +43,9 @@ public class Book {
 
     public void addAvailableStoredBooks(int count) {
         for (int i = 0; i < count; i++) {
-            StoredBook sb = StoredBook.createAvailable();
-            registerStoredBook(sb);
+            StoredBook storedBook = StoredBook.createAvailable(this);
+            storedBooks.add(storedBook);
         }
-    }
-
-    private void registerStoredBook(StoredBook storedBook) {
-        storedBook.setBook(this);
-        storedBooks.add(storedBook);
     }
 
     public String getTitle() {
