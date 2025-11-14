@@ -2,6 +2,7 @@ package smiinii.object_oriented_library;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import smiinii.object_oriented_library.domain.Book;
 import smiinii.object_oriented_library.domain.StoredBook;
 import smiinii.object_oriented_library.domain.StoredBookStatus;
 import smiinii.object_oriented_library.domain.StoredBooks;
@@ -31,7 +32,7 @@ public class StoredBooksTest {
     void addStoredBooks() {
         // given
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook storedBook = StoredBook.createAvailable();
+        StoredBook storedBook = StoredBook.createAvailable(dummyBook());
         // when
         storedBooks.add(storedBook);
         // then
@@ -42,12 +43,12 @@ public class StoredBooksTest {
     @DisplayName("외부에서 반환 리스트를 수정해도 내부 상태는 변하지 않는다")
     void returnedListIsImmutable() {
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook storedBook = StoredBook.createAvailable();
+        StoredBook storedBook = StoredBook.createAvailable(dummyBook());
         storedBooks.add(storedBook);
 
         List<StoredBook> result = storedBooks.getStoredBooks();
 
-        assertThatThrownBy(() -> result.add(StoredBook.createAvailable()))
+        assertThatThrownBy(() -> result.add(StoredBook.createAvailable(dummyBook())))
                 .isInstanceOf(UnsupportedOperationException.class);
     }
 
@@ -56,7 +57,7 @@ public class StoredBooksTest {
     void allLoanedTrueWhenAllBooksLoaned() {
         // given
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook storedBook = StoredBook.createAvailable();
+        StoredBook storedBook = StoredBook.createAvailable(dummyBook());
         storedBook.loan(); // 상태 전이 AVAILABLE → LOANED
         // when
         storedBooks.add(storedBook);
@@ -80,8 +81,8 @@ public class StoredBooksTest {
     void returnsFirstAvailableBook() {
         // given
         StoredBooks storedBooks = new StoredBooks();
-        storedBooks.add(StoredBook.createOnHold());
-        storedBooks.add(StoredBook.createAvailable());
+        storedBooks.add(StoredBook.createOnHold(dummyBook()));
+        storedBooks.add(StoredBook.createAvailable(dummyBook()));
         // when
         Optional<StoredBook> result = storedBooks.firstAvailable();
         // then
@@ -103,7 +104,7 @@ public class StoredBooksTest {
     void returnsEmptyWhenNoAvailableBook() {
         // given
         StoredBooks storedBooks = new StoredBooks();
-        storedBooks.add(StoredBook.createOnHold());
+        storedBooks.add(StoredBook.createOnHold(dummyBook()));
         // when
         Optional<StoredBook> result = storedBooks.firstAvailable();
         // then
@@ -115,8 +116,8 @@ public class StoredBooksTest {
     void returnsMatchingStoredBook() {
         // given
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook sb1 = StoredBook.createAvailable();
-        StoredBook sb2 = StoredBook.createOnHold();
+        StoredBook sb1 = StoredBook.createAvailable(dummyBook());
+        StoredBook sb2 = StoredBook.createOnHold(dummyBook());
         storedBooks.add(sb1);
         storedBooks.add(sb2);
         setId(sb1, 101L);
@@ -134,7 +135,7 @@ public class StoredBooksTest {
     void returnsEmptyWhenNotFound() {
         // given
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook sb = StoredBook.createAvailable();
+        StoredBook sb = StoredBook.createAvailable(dummyBook());
         storedBooks.add(sb);
         setId(sb, 101L);
         // when
@@ -148,8 +149,8 @@ public class StoredBooksTest {
     void changesStatusToAvailable() {
         // given
         StoredBooks storedBooks = new StoredBooks();
-        StoredBook hold = StoredBook.createOnHold();
-        StoredBook loaned = StoredBook.createAvailable();
+        StoredBook hold = StoredBook.createOnHold(dummyBook());
+        StoredBook loaned = StoredBook.createAvailable(dummyBook());
         loaned.loan();
         storedBooks.add(hold);
         storedBooks.add(loaned);
@@ -160,5 +161,8 @@ public class StoredBooksTest {
         // then
         assertThat(hold.getStatus()).isEqualTo(StoredBookStatus.AVAILABLE);
         assertThat(loaned.getStatus()).isEqualTo(StoredBookStatus.AVAILABLE);
+    }
+    private Book dummyBook() {
+        return Book.registerNew("테스트 제목", "테스트 저자", 1);
     }
 }
