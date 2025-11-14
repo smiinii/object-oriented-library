@@ -30,7 +30,7 @@ public class StoredBook {
         return new StoredBook(StoredBookStatus.ON_HOLD);
     }
 
-    public void setBook(Book book) {
+    public void linkTo(Book book) {
         this.book = book;
     }
 
