@@ -52,6 +52,13 @@ public class StoredBook {
         this.status = StoredBookStatus.AVAILABLE;
     }
 
+    public void toOnHold() {
+        if (!status.isAvailable()) {
+            throw new IllegalStateException("예약은 AVAILABLE 상태에서만 가능합니다.");
+        }
+        this.status = StoredBookStatus.ON_HOLD;
+    }
+
     public void returnToAvailable() {
         this.status = StoredBookStatus.AVAILABLE;
     }
