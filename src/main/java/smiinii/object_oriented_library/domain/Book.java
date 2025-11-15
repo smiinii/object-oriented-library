@@ -2,6 +2,8 @@ package smiinii.object_oriented_library.domain;
 
 import jakarta.persistence.*;
 import smiinii.object_oriented_library.domain.reservation.Reservations;
+import smiinii.object_oriented_library.domain.storedbook.StoredBook;
+import smiinii.object_oriented_library.domain.storedbook.StoredBooks;
 
 import java.time.Clock;
 import java.time.Duration;

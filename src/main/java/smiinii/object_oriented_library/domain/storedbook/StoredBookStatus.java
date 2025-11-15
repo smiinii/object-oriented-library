@@ -1,4 +1,4 @@
-package smiinii.object_oriented_library.domain;
+package smiinii.object_oriented_library.domain.storedbook;
 
 public enum StoredBookStatus {
     AVAILABLE,

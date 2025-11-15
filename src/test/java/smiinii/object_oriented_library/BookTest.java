@@ -3,8 +3,8 @@ package smiinii.object_oriented_library;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import smiinii.object_oriented_library.domain.Book;
-import smiinii.object_oriented_library.domain.StoredBook;
-import smiinii.object_oriented_library.domain.StoredBookStatus;
+import smiinii.object_oriented_library.domain.storedbook.StoredBook;
+import smiinii.object_oriented_library.domain.storedbook.StoredBookStatus;
 
 import java.time.Clock;
 import java.time.Duration;

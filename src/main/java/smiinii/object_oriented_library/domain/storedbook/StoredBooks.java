@@ -1,4 +1,4 @@
-package smiinii.object_oriented_library.domain;
+package smiinii.object_oriented_library.domain.storedbook;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;

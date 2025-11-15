@@ -1,8 +1,8 @@
 package smiinii.object_oriented_library.domain.reservation_policy;
 
 import org.springframework.stereotype.Component;
-import smiinii.object_oriented_library.domain.StoredBook;
-import smiinii.object_oriented_library.domain.StoredBooks;
+import smiinii.object_oriented_library.domain.storedbook.StoredBook;
+import smiinii.object_oriented_library.domain.storedbook.StoredBooks;
 
 import java.time.Duration;
 import java.util.Optional;
