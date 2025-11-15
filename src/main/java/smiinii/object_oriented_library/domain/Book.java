@@ -3,6 +3,10 @@ package smiinii.object_oriented_library.domain;
 import jakarta.persistence.*;
 import smiinii.object_oriented_library.domain.reservation.Reservations;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.util.Optional;
+
 @Entity
 public class Book {
 
@@ -45,6 +49,29 @@ public class Book {
         for (int i = 0; i < count; i++) {
             StoredBook storedBook = StoredBook.createAvailable(this);
             storedBooks.add(storedBook);
+        }
+    }
+
+    public boolean tryReserve(Long memberId, int maxQueueSize, Clock clock) {
+        if (!storedBooks.allLoaned()) {
+            return false;
+        }
+        return reservations.tryReserve(this, memberId, maxQueueSize, clock);
+    }
+
+    public void assignHoldIfReservationExists(Duration holdDuration, Clock clock) {
+        Optional<StoredBook> firstStoredBook = storedBooks.firstAvailable();
+        if (firstStoredBook.isEmpty()) {
+            return;
+        }
+        StoredBook storedBook = firstStoredBook.get();
+
+        boolean assigned = reservations
+                .assignHoldToHeadIfExists(storedBook.getId(), holdDuration, clock)
+                .isPresent();
+
+        if (assigned) {
+            storedBook.toOnHold();
         }
     }
 
