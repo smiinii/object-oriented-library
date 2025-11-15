@@ -58,6 +58,21 @@ public class Reservations {
                 .findFirst();
     }
 
+    public Optional<Reservation> assignHoldToHeadIfExists(Long storedBookId, Duration holdDuration, Clock clock) {
+        Optional<Reservation> headReservation = headQueued();
+        if (headReservation.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Reservation reservation = headReservation.get();
+
+        LocalDateTime now = LocalDateTime.now(clock);
+        LocalDateTime holdUntil = now.plus(holdDuration);
+
+        reservation.prepareHold(storedBookId, holdUntil);
+        return Optional.of(reservation);
+    }
+
     public Optional<Reservation> headQueued() {
         return reservations.stream().filter(Reservation::isQueued).findFirst();
     }
