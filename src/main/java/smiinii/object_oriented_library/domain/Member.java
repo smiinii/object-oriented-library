@@ -33,7 +33,7 @@ public class Member {
         return new Member(name);
     }
 
-    public boolean canBorrow(Clock clock) {
+    public boolean canBorrow() {
         return memberStatus == MemberStatus.ACTIVE;
     }
 
