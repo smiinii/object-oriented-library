@@ -19,7 +19,7 @@ public class LoanTest {
     @DisplayName("of : 대출 생성 성공")
     void createLoanSuccessfully() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
 
@@ -39,7 +39,7 @@ public class LoanTest {
     @DisplayName("returnBook : 예약 없음 → 소장본을 AVAILABLE로 변경한다")
     void withoutReservation_changesStoredBookToAvailable() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
         storedBook.loan();
@@ -59,7 +59,7 @@ public class LoanTest {
     @DisplayName("returnBook : 예약 있음 → 소장본을 ON_HOLD로 변경한다")
     void withReservation_changesStoredBookToOnHold() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
         storedBook.loan();
@@ -79,7 +79,7 @@ public class LoanTest {
     @DisplayName("returnBook : 이미 반납된 대출은 다시 반납할 수 없다")
     void returnBookFailWhenAlreadyReturned() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
         storedBook.loan();
@@ -103,7 +103,7 @@ public class LoanTest {
     @DisplayName("extend : 대출 중이고, 연체 아니며, 예약이 없으면 연장된다")
     void extendSuccess() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
         storedBook.loan();
@@ -124,7 +124,7 @@ public class LoanTest {
     @DisplayName("extend : 이미 반납된 도서는 연장할 수 없다")
     void extendFailWhenReturned() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
         storedBook.loan();
@@ -148,7 +148,7 @@ public class LoanTest {
     @DisplayName("extend : 연체 중인 도서는 연장할 수 없다")
     void extendFailWhenOverdue() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
         storedBook.loan();
@@ -169,7 +169,7 @@ public class LoanTest {
     @DisplayName("extend : 다른 회원의 예약 대기열이 존재하면 연장할 수 없다")
     void extendFailWhenReservationExists() {
         // given
-        Member member = Member.generation("smini");
+        Member member = Member.create("smini");
         Book book = Book.registerNew("자바의정석", "남궁성", 1);
         StoredBook storedBook = StoredBook.createAvailable(book);
         storedBook.loan();
