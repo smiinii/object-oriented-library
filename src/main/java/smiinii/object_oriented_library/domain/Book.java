@@ -88,4 +88,8 @@ public class Book {
     public StoredBooks getStoredBooks() {
         return storedBooks;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
