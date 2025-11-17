@@ -1,4 +1,4 @@
-package smiinii.object_oriented_library.storedbook;
+package smiinii.object_oriented_library.domain.storedbook;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,7 @@
-package smiinii.object_oriented_library;
+package smiinii.object_oriented_library.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import smiinii.object_oriented_library.domain.Book;
-import smiinii.object_oriented_library.domain.Loan;
-import smiinii.object_oriented_library.domain.Member;
 import smiinii.object_oriented_library.domain.storedbook.StoredBook;
 import smiinii.object_oriented_library.domain.storedbook.StoredBookStatus;
 

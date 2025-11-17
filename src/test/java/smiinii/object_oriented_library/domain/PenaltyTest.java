@@ -1,8 +1,7 @@
-package smiinii.object_oriented_library;
+package smiinii.object_oriented_library.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import smiinii.object_oriented_library.domain.Penalty;
 
 import java.time.LocalDateTime;
 

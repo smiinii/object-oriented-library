@@ -1,4 +1,4 @@
-package smiinii.object_oriented_library.reservation;
+package smiinii.object_oriented_library.domain.reservation;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
