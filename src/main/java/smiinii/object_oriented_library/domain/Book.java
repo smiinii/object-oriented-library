@@ -77,6 +77,11 @@ public class Book {
         }
     }
 
+    public boolean hasActiveReservationByOtherMember(Long memberId) {
+        return reservations.getReservations().stream()
+                .anyMatch(r -> r.isActive() && !r.sameMember(memberId));
+    }
+
     public String getTitle() {
         return title;
     }
