@@ -85,4 +85,8 @@ public class Loan {
     public LocalDateTime getLoanedAt() {
         return loanedAt;
     }
+
+    public long getId() {
+        return id;
+    }
 }
