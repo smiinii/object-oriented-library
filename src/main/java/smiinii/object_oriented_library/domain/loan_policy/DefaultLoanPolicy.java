@@ -1,7 +1,10 @@
 package smiinii.object_oriented_library.domain.loan_policy;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 
+@Component
 public class DefaultLoanPolicy implements LoanPolicy {
 
     @Override
