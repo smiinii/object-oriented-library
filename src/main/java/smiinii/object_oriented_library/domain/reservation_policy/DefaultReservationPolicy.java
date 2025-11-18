@@ -19,9 +19,4 @@ public class DefaultReservationPolicy implements ReservationPolicy {
     public Duration holdDuration() {
         return Duration.ofDays(3);
     }
-
-    @Override
-    public Optional<StoredBook> selectStoredBook(StoredBooks storedBooks) {
-        return storedBooks.firstAvailable();
-    }
 }
