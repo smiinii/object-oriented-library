@@ -1,12 +1,14 @@
 package smiinii.object_oriented_library.domain;
 
 import jakarta.persistence.*;
+import smiinii.object_oriented_library.domain.reservation.Reservation;
 import smiinii.object_oriented_library.domain.reservation.Reservations;
 import smiinii.object_oriented_library.domain.storedbook.StoredBook;
 import smiinii.object_oriented_library.domain.storedbook.StoredBooks;
 
 import java.time.Clock;
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 @Entity
@@ -98,7 +100,7 @@ public class Book {
         return id;
     }
 
-    public Reservations getReservations() {
-        return reservations;
+    public List<Reservation> getReservations() {
+        return reservations.getReservations();
     }
 }
