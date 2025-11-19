@@ -112,4 +112,8 @@ public class Reservation {
     public Long getMemberId() {
         return memberId;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
