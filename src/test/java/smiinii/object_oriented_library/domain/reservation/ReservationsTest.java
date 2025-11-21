@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class reservationsTest {
+public class ReservationsTest {
 
     @Test
     @DisplayName("tryReserve : 같은 회원이 활성 예약을 가진 경우 false 반환")

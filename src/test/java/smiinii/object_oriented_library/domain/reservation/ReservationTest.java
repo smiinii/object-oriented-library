@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class reservationTest {
+public class ReservationTest {
 
     @Test
     @DisplayName("create: 예약 생성")
