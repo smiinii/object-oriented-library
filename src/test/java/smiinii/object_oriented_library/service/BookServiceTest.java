@@ -8,6 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import smiinii.object_oriented_library.domain.Book;
+import smiinii.object_oriented_library.dto.book.BookResponse;
 import smiinii.object_oriented_library.repository.BookRepository;
 
 import java.lang.reflect.Field;
@@ -97,9 +98,12 @@ class BookServiceTest {
         Book book = Book.registerNew("클린 코드", "로버트 마틴", 1);
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
         // when
-        Book result = bookService.getBook(bookId);
+        BookResponse result = bookService.getBook(bookId);
         // then
-        assertThat(result).isSameAs(book);
+        assertThat(result.getTitle()).isEqualTo("클린 코드");
+        assertThat(result.getAuthor()).isEqualTo("로버트 마틴");
+        assertThat(result.getCopyCount()).isEqualTo(1);
+
         verify(bookRepository, times(1)).findById(bookId);
     }
 
@@ -123,9 +127,16 @@ class BookServiceTest {
         Book book2 = Book.registerNew("리팩터링", "마틴 파울러", 2);
         when(bookRepository.findAll()).thenReturn(List.of(book1, book2));
         // when
-        List<Book> result = bookService.getBooks();
+        List<BookResponse> result = bookService.getBooks();
         // then
-        assertThat(result).hasSize(2).containsExactly(book1, book2);
+        assertThat(result).hasSize(2);
+        assertThat(result)
+                .extracting(BookResponse::getTitle)
+                .containsExactly("클린 코드", "리팩터링");
+        assertThat(result)
+                .extracting(BookResponse::getAuthor)
+                .containsExactly("로버트 마틴", "마틴 파울러");
+
         verify(bookRepository, times(1)).findAll();
     }
 }

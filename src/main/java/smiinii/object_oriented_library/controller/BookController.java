@@ -3,14 +3,12 @@ package smiinii.object_oriented_library.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import smiinii.object_oriented_library.domain.Book;
 import smiinii.object_oriented_library.dto.book.AddBooksRequest;
 import smiinii.object_oriented_library.dto.book.BookCreateRequest;
 import smiinii.object_oriented_library.dto.book.BookResponse;
 import smiinii.object_oriented_library.service.BookService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
@@ -41,16 +39,11 @@ public class BookController {
 
     @GetMapping("/{bookId}")
     public ResponseEntity<BookResponse> getBook(@PathVariable Long bookId) {
-        Book book = bookService.getBook(bookId);
-        return ResponseEntity.ok(BookResponse.from(book));
+        return ResponseEntity.ok(bookService.getBook(bookId));
     }
 
     @GetMapping
     public ResponseEntity<List<BookResponse>> getBooks() {
-        List<Book> books = bookService.getBooks();
-        List<BookResponse> responses = books.stream()
-                .map(BookResponse::from)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(responses);
+        return ResponseEntity.ok(bookService.getBooks());
     }
 }

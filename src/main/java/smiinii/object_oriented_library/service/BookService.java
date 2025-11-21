@@ -3,9 +3,11 @@ package smiinii.object_oriented_library.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import smiinii.object_oriented_library.domain.Book;
+import smiinii.object_oriented_library.dto.book.BookResponse;
 import smiinii.object_oriented_library.repository.BookRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,12 +33,15 @@ public class BookService {
         book.addAvailableStoredBooks(count);
     }
 
-    public Book getBook(Long bookId) {
-        return bookRepository.findById(bookId)
+    public BookResponse getBook(Long bookId) {
+        Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 도서입니다."));
+        return BookResponse.from(book);
     }
 
-    public List<Book> getBooks() {
-        return bookRepository.findAll();
+    public List<BookResponse> getBooks() {
+        return bookRepository.findAll().stream()
+                .map(BookResponse::from)
+                .collect(Collectors.toList());
     }
 }
