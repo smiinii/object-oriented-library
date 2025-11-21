@@ -3,8 +3,6 @@ package smiinii.object_oriented_library.domain.storedbook;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import smiinii.object_oriented_library.domain.Book;
-import smiinii.object_oriented_library.domain.storedbook.StoredBook;
-import smiinii.object_oriented_library.domain.storedbook.StoredBookStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

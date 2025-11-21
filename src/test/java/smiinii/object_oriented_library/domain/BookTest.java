@@ -88,7 +88,7 @@ public class BookTest {
     void tryReserveSucceedsWhenAllCopiesLoaned() {
         // given
         Book book = Book.registerNew("자바의 정석", "남궁성", 1);
-        StoredBook storedBook = book.getStoredBooks().getStoredBooks().get(0);
+        StoredBook storedBook = book.getStoredBooks().getStoredBooks().getFirst();
         storedBook.loan();
         // when
         boolean reserved = book.tryReserve(1L, 3, fixedClock);
@@ -101,7 +101,7 @@ public class BookTest {
     void doesNothingWhenNoAvailableCopy() {
         // given
         Book book = Book.registerNew("자바의 정석", "남궁성", 1);
-        StoredBook storedBook = book.getStoredBooks().getStoredBooks().get(0);
+        StoredBook storedBook = book.getStoredBooks().getStoredBooks().getFirst();
         storedBook.loan();
         book.tryReserve(1L, 3, fixedClock);
         // when
@@ -115,7 +115,7 @@ public class BookTest {
     void doesNothingWhenNoReservationQueued() {
         // given
         Book book = Book.registerNew("자바의 정석", "남궁성", 1);
-        StoredBook storedBook = book.getStoredBooks().getStoredBooks().get(0);
+        StoredBook storedBook = book.getStoredBooks().getStoredBooks().getFirst();
         // when
         book.assignHoldIfReservationExists(Duration.ofHours(3), fixedClock);
         // then
@@ -127,7 +127,7 @@ public class BookTest {
     void assignsHoldWhenAvailableCopyAndReservationExist() {
         // given
         Book book = Book.registerNew("자바의 정석", "남궁성", 1);
-        StoredBook storedBook = book.getStoredBooks().getStoredBooks().get(0);
+        StoredBook storedBook = book.getStoredBooks().getStoredBooks().getFirst();
         storedBook.loan();
 
         boolean reserved = book.tryReserve(1L, 3, fixedClock);

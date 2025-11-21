@@ -3,8 +3,6 @@ package smiinii.object_oriented_library.domain.reservation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import smiinii.object_oriented_library.domain.Book;
-import smiinii.object_oriented_library.domain.reservation.Reservation;
-import smiinii.object_oriented_library.domain.reservation.ReservationStatus;
 
 import java.time.LocalDateTime;
 
